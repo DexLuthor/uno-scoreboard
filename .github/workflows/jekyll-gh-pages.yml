@@ -29,12 +29,14 @@ jobs:
         uses: actions/checkout@v3
       - name: Setup Pages
         uses: actions/configure-pages@v2 
+      - name: Install angular
+        run: npm install -g @angular/cli@14.2.0
       - name: Build project
         run: ng build --configuration=production --progress  
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
-          source: ./
+          source: ./dist/uno-sccoreboard/
           destination: ./_site
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
