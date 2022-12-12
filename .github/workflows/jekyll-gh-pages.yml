@@ -31,6 +31,8 @@ jobs:
         uses: actions/configure-pages@v2 
       - name: Install angular
         run: npm install -g @angular/cli@14.2.0
+      - name: Install dependencies
+        run: npm i
       - name: Build project
         run: ng build --configuration=production --progress  
       - name: Build with Jekyll
