@@ -34,7 +34,7 @@ jobs:
       - name: Install dependencies
         run: npm i
       - name: Build project
-        run: ng build --configuration=production --progress  
+        run: ng build --configuration=production --progress --base-href 'https://dexluthor.github.io/uno-scoreboard/' --build-optimizer
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
