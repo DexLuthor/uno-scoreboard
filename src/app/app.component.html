@@ -1,5 +1,5 @@
 <div class="container">
-  <dialog open class="modal">
+  <dialog class="modal">
     <input type="text" placeholder="Threshold">
   </dialog>
   <div class="players__wrapper">
@@ -25,16 +25,21 @@
     <button
       (click)="addPlayer()"
       [disabled]="addingPlayer"
-      class="add">+
+      class="add"
+      tabindex="-1"
+    >+
     </button>
   </div>
   <button
     (click)="next()"
-    class="next">Next
+    class="next"
+    tabindex="-1">Next
   </button>
   <button
     (click)="reset()"
-    class="reset">
+    class="reset"
+    tabindex="-1"
+  >
     <i class="fa-regular fa-arrows-rotate"></i>
   </button>
 </div>
