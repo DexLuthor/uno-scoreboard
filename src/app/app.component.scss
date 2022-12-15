@@ -157,7 +157,7 @@ $border-radius: 8px;
     transition: transform ease-out .6s;
 
     &:hover {
-      transform: rotate(360deg);
+      transform: rotate(360deg) scale(1.1);
     }
   }
 }

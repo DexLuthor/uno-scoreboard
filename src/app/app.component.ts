@@ -1,12 +1,17 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import {Player} from "./Player";
 
+import {faArrowRightRotate, faPlus} from '@fortawesome/free-solid-svg-icons';
+
 @Component({
   selector: 'root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss']
 })
 export class AppComponent implements OnInit {
+  iconPlus = faPlus
+  iconReset = faArrowRightRotate
+
   ngOnInit(): void {
     const state = localStorage.getItem('state');
     if (state) {
