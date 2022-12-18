@@ -1,7 +1,7 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import {Player} from "./Player";
 
-import {faArrowRightRotate, faChevronLeft, faShuffle} from '@fortawesome/free-solid-svg-icons';
+import {faArrowRightRotate, faChevronLeft} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'root',
@@ -10,7 +10,6 @@ import {faArrowRightRotate, faChevronLeft, faShuffle} from '@fortawesome/free-so
 })
 export class AppComponent implements OnInit {
   iconReset = faArrowRightRotate
-  iconDealer = faShuffle
   iconChevronLeft = faChevronLeft
   players: Player[] = [
     {name: 'Zheka', history: [], dealer: true},
@@ -45,14 +44,6 @@ export class AppComponent implements OnInit {
     localStorage.setItem('state', JSON.stringify(this.players));
   };
 
-  score(p: Player) {
-    return p.history.reduce((a, b) => a + b, 0)
-  }
-
-  winsNumber(p: Player) {
-    return p.history.filter(round => round === 0).length
-  }
-
   reset() {
     this.players.forEach(p => {
       p.dealer = false
@@ -83,6 +74,10 @@ export class AppComponent implements OnInit {
 
   backDisabled() {
     return !this.players || !this.players.every(player => player.history.length > 0)
+  }
+
+  pointsChanged(idx: number, points: number) {
+    this.pointInputs[idx] = points
   }
 
   private restoreAndReconcileState(): void {

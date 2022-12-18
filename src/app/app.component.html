@@ -3,17 +3,12 @@
     <input type="text" placeholder="Threshold">
   </dialog>
   <div class="players__wrapper">
-    <div *ngFor="let player of players; let i = index" class="player">
-      <fa-icon *ngIf="player.dealer" class="dealer" [icon]="iconDealer" [classes]="['fa-2x']"></fa-icon>
-      <div class="name">{{player.name}}</div>
-      <div class="score">{{score(player)}}</div>
-      <hr class="separator">
-      <ol class="history">
-        <li *ngFor="let point of player.history">{{point}}</li>
-      </ol>
-      <strong>Flawless rounds: {{winsNumber(player)}}</strong>
-      <input [(ngModel)]="pointInputs[i]" type="number" placeholder="Enter points...">
-    </div>
+    <player
+      *ngFor="let player of players; let i = index"
+      [player]="player"
+      [pointsInput]="pointInputs[i]"
+      (pointsChanged)="pointsChanged(i, $event)"
+    ></player>
   </div>
   <div class="controls">
     <button
