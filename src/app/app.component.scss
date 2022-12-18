@@ -99,29 +99,6 @@ $border-radius: 8px;
         }
       }
     }
-
-    .add {
-      position: absolute;
-      top: 50%;
-      right: 0;
-
-      width: 30px;
-      height: 30px;
-
-      border: none;
-      outline: none;
-      border-radius: $border-radius;
-      background-color: $primary;
-      opacity: .3;
-      transform: translate(45px, -15px);
-      transition: opacity ease-out .3s, transform ease-out .3s;
-      cursor: pointer;
-
-      &:hover, &:focus {
-        opacity: 1;
-        transform: translate(45px, -15px) scale(1.2);
-      }
-    }
   }
 
   .next {

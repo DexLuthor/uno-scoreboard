@@ -13,23 +13,6 @@
       <strong>Flawless rounds: {{winsNumber(p)}}</strong>
       <input [(ngModel)]="pointInputs[i]" type="number" placeholder="Enter points...">
     </div>
-    <div *ngIf="addingPlayer" class="player">
-      <div>
-        <input type="text" class="">
-      </div>
-      <div class="score">0</div>
-      <hr class="separator">
-
-      <input type="number">
-    </div>
-    <button
-      (click)="addPlayer()"
-      [disabled]="addingPlayer"
-      class="add"
-      tabindex="-1"
-    >
-      <fa-icon [icon]="iconPlus"></fa-icon>
-    </button>
   </div>
   <button
     (click)="next()"

@@ -1,7 +1,7 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import {Player} from "./Player";
 
-import {faArrowRightRotate, faPlus} from '@fortawesome/free-solid-svg-icons';
+import {faArrowRightRotate} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'root',
@@ -9,7 +9,6 @@ import {faArrowRightRotate, faPlus} from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent implements OnInit {
-  iconPlus = faPlus
   iconReset = faArrowRightRotate
 
   ngOnInit(): void {
@@ -29,13 +28,6 @@ export class AppComponent implements OnInit {
     null,
     null
   ]
-  addingPlayer: boolean = false;
-
-  addPlayer() {
-    this.addingPlayer = true;
-    // this.players.push({name: '', score: 0, history: []});
-    // this.pointInputs.push(null);
-  }
 
   @HostListener("window:keydown.enter")
   next() {
