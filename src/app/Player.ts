@@ -1,4 +1,5 @@
-export interface Player {
-  name: string
-  history: number[]
+export class Player {
+  name: string = 'Unnamed'
+  history: number[] = []
+  dealer: boolean = false
 }
