@@ -53,4 +53,15 @@ export class AppComponent implements OnInit {
     this.players.forEach(p => p.history = [])
     localStorage.removeItem('state');
   }
+
+  back() {
+    this.players.forEach((player, idx) => {
+      let removed = player.history.pop();
+      this.pointInputs[idx] = removed!
+    })
+  }
+
+  backDisabled() {
+    return !this.players || !this.players.every(player => player.history.length > 0)
+  }
 }
