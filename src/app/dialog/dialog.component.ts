@@ -1,6 +1,6 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
 import {faCancel, faCheck, faPlus, faTrash} from '@fortawesome/free-solid-svg-icons'
-import {Config} from "../Config";
+import {Config} from "../model/Config";
 
 @Component({
   selector: 'settings-dialog',
@@ -46,6 +46,7 @@ export class DialogComponent implements OnInit {
     this.players.splice(idx, 1)
   }
 
+  @HostListener("window:keydown.enter")
   addPlayer() {
     if (this.newPlayer) {
       this.players.push(this.newPlayer)

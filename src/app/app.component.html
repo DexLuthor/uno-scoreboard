@@ -32,4 +32,10 @@
   >
     <fa-icon [icon]="iconReset"></fa-icon>
   </button>
+  <button class="theme" (click)="toggleTheme()">
+    <fa-icon *ngIf="dark;else lightTheme" [icon]="iconSun"></fa-icon>
+    <ng-template #lightTheme>
+      <fa-icon [icon]="iconMoon"></fa-icon>
+    </ng-template>
+  </button>
 </div>

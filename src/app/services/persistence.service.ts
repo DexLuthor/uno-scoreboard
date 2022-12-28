@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {PersistableState} from "../PersistableState";
+import {PersistableState} from "../model/PersistableState";
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +17,7 @@ export class PersistenceService {
   //   const config = localStorage.getItem(PersistenceService.CONFIG_KEY);
   //   return config ? JSON.parse(config) : null
   // }
+  private static readonly PREFERRED_THEME = 'preferred-theme';
 
   upsertState(state: PersistableState): void {
     localStorage.setItem(PersistenceService.STATE_KEY, JSON.stringify(state));
@@ -35,5 +36,17 @@ export class PersistenceService {
       players: [],
       threshold: 200
     }
+  }
+
+  getPreferredTheme(): "dark" | "light" {
+    const theme = localStorage.getItem(PersistenceService.PREFERRED_THEME);
+    if (theme) {
+      return theme === "dark" ? "dark" : "light"
+    }
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+  }
+
+  setPreferredTheme(theme: "dark" | "light") {
+    localStorage.setItem(PersistenceService.PREFERRED_THEME, theme)
   }
 }

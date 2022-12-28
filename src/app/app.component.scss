@@ -1,6 +1,4 @@
-$primary: #DAC3C3;
-$contrast: #D75D5D;
-$border-radius: 8px;
+@import './vars';
 
 .container {
   width: 100%;
@@ -16,7 +14,7 @@ $border-radius: 8px;
 
   gap: 20px;
 
-  background-color: $contrast;
+  background-color: rgb(var(--bgc));
 
   .players__wrapper {
     flex: 0.9;
@@ -32,22 +30,7 @@ $border-radius: 8px;
   }
 
   .next {
-    border: none;
-    outline: none;
-    background-color: $primary;
-    border-radius: $border-radius;
     padding: 4px 8px;
-    transition: transform ease-out .3s;
-    cursor: pointer;
-
-    &:hover, &:focus {
-      transform: scale(1.2);
-    }
-
-    &:disabled {
-      transform: none;
-      cursor: not-allowed;
-    }
   }
 
   .reset {
@@ -55,16 +38,23 @@ $border-radius: 8px;
     bottom: 50px;
     right: 50px;
 
-    border: none;
-    outline: none;
     border-radius: 50%;
     width: 50px;
     height: 50px;
-    cursor: pointer;
     transition: transform ease-out .6s;
 
     &:hover {
       transform: rotate(360deg) scale(1.1);
     }
+  }
+
+  .theme {
+    position: absolute;
+    top: 50px;
+    right: 50px;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    transition: transform ease-out .6s;
   }
 }

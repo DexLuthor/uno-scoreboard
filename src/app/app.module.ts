@@ -5,10 +5,9 @@ import {FormsModule} from "@angular/forms";
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {PlayerComponent} from './player/player.component';
 import {DialogComponent} from './dialog/dialog.component';
-import { UnoButtonComponent } from './components/uno-button/uno-button.component';
 
 @NgModule({
-  declarations: [AppComponent, PlayerComponent, DialogComponent, UnoButtonComponent],
+  declarations: [AppComponent, PlayerComponent, DialogComponent],
   imports: [BrowserModule, FormsModule, FontAwesomeModule],
   bootstrap: [AppComponent]
 })

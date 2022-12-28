@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {Player} from "../Player";
+import {Player} from "../model/Player";
 import {faShuffle} from "@fortawesome/free-solid-svg-icons";
 
 @Component({

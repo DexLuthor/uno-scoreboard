@@ -1,10 +1,10 @@
 import {Component, HostListener, OnInit} from '@angular/core';
-import {Player} from "./Player";
+import {Player} from "./model/Player";
 
-import {faArrowRightRotate, faChevronLeft} from '@fortawesome/free-solid-svg-icons';
-import {Config} from "./Config";
+import {faArrowRightRotate, faChevronLeft, faMoon, faSun} from '@fortawesome/free-solid-svg-icons';
+import {Config} from "./model/Config";
 import {PersistenceService} from "./services/persistence.service";
-import {PersistableState} from "./PersistableState";
+import {PersistableState} from "./model/PersistableState";
 
 @Component({
   selector: 'root',
@@ -14,12 +14,18 @@ import {PersistableState} from "./PersistableState";
 export class AppComponent implements OnInit {
   iconReset = faArrowRightRotate
   iconChevronLeft = faChevronLeft
+  iconSun = faSun
+  iconMoon = faMoon
 
   players: Player[] = [];
   threshold = 200
   pointInputs: (number | null)[] = []
+  dark: boolean
 
   constructor(private persistenceService: PersistenceService) {
+    const preferredTheme = persistenceService.getPreferredTheme();
+    this.dark = preferredTheme === 'dark'
+    document.body.classList.add(preferredTheme)
   }
 
   ngOnInit(): void {
@@ -31,6 +37,10 @@ export class AppComponent implements OnInit {
 
   @HostListener("window:keydown.enter")
   next() {
+    if (this.showConfigDialog()) {
+      return
+    }
+
     //account points
     this.players.forEach((player, i) => {
       let pointsToAccount = this.pointInputs[i] || 0;
@@ -56,7 +66,7 @@ export class AppComponent implements OnInit {
       p.history = []
     })
     this.players[0].dealer = true
-    this.pointInputs.forEach(input => input = null)
+    this.pointInputs = this.pointInputs.map(_ => null)
 
     this.persistenceService.flushState()
   }
@@ -103,6 +113,11 @@ export class AppComponent implements OnInit {
   showConfigDialog(): boolean {
     const state = this.persistenceService.readState();
     return !state.threshold || state.players.length < 2
+  }
+
+  toggleTheme(): void {
+    this.dark = document.body.classList.toggle('dark');
+    this.persistenceService.setPreferredTheme(this.dark ? 'dark' : 'light')
   }
 
   private restoreAndReconcileState(): void {
