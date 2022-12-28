@@ -1,7 +1,8 @@
 <div class="container">
-  <dialog class="modal">
-    <input type="text" placeholder="Threshold">
-  </dialog>
+  <settings-dialog
+    *ngIf="showConfigDialog()"
+    (configsUpdated)="onConfigUpdated($event)"
+  ></settings-dialog>
   <div class="players__wrapper">
     <player
       *ngFor="let player of players; let i = index"

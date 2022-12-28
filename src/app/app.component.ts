@@ -2,6 +2,9 @@ import {Component, HostListener, OnInit} from '@angular/core';
 import {Player} from "./Player";
 
 import {faArrowRightRotate, faChevronLeft} from '@fortawesome/free-solid-svg-icons';
+import {Config} from "./Config";
+import {PersistenceService} from "./services/persistence.service";
+import {PersistableState} from "./PersistableState";
 
 @Component({
   selector: 'root',
@@ -11,16 +14,19 @@ import {faArrowRightRotate, faChevronLeft} from '@fortawesome/free-solid-svg-ico
 export class AppComponent implements OnInit {
   iconReset = faArrowRightRotate
   iconChevronLeft = faChevronLeft
-  players: Player[] = [
-    {name: 'Zheka', history: [], dealer: true},
-    {name: 'Valentyna', history: [], dealer: false},
-    {name: 'Bruce', history: [], dealer: false},
-  ];
-  readonly pointInputs: (number | null)[] = [null, null, null]
+
+  players: Player[] = [];
+  threshold = 200
+  pointInputs: (number | null)[] = []
+
+  constructor(private persistenceService: PersistenceService) {
+  }
 
   ngOnInit(): void {
     this.restoreAndReconcileState()
     this.assignDealer()
+
+    this.pointInputs = this.players.map(_ => null)
   }
 
   @HostListener("window:keydown.enter")
@@ -41,7 +47,7 @@ export class AppComponent implements OnInit {
     this.players[newDealer].dealer = true
 
     //persist
-    localStorage.setItem('state', JSON.stringify(this.players));
+    this.persistenceService.upsertState({players: this.players, threshold: this.threshold});
   };
 
   reset() {
@@ -52,7 +58,7 @@ export class AppComponent implements OnInit {
     this.players[0].dealer = true
     this.pointInputs.forEach(input => input = null)
 
-    localStorage.removeItem('state');
+    this.persistenceService.flushState()
   }
 
   back() {
@@ -69,7 +75,7 @@ export class AppComponent implements OnInit {
     this.players[newShuffler].dealer = true
 
     //persist
-    localStorage.setItem('state', JSON.stringify(this.players));
+    this.persistenceService.upsertState({players: this.players, threshold: this.threshold});
   }
 
   backDisabled() {
@@ -80,25 +86,43 @@ export class AppComponent implements OnInit {
     this.pointInputs[idx] = points
   }
 
-  private restoreAndReconcileState(): void {
-    const state = localStorage.getItem('state');
-    if (state) {
-      const parsedState: Player[] = JSON.parse(state)
-
-      // The local storage state isn't updated with new properties of the Player model.
-      // In case the model was once stored on the user side and then an update has been released
-      // model changes would never get to localStorage unless ...new Player() syncs things
-      this.players = parsedState.map(player => ({
-        ...new Player(),
-        ...player
+  onConfigUpdated(config: Config) {
+    // this.persistenceService.upsertConfig(config)
+    this.persistenceService.upsertState({
+      threshold: config.threshold,
+      players: config.players.map(name => ({
+        name,
+        history: [],
+        dealer: false
       }))
-    }
+    })
+    this.restoreAndReconcileState()
+    this.assignDealer()
+  }
+
+  showConfigDialog(): boolean {
+    const state = this.persistenceService.readState();
+    return !state.threshold || state.players.length < 2
+  }
+
+  private restoreAndReconcileState(): void {
+    const state: PersistableState = this.persistenceService.readState()
+
+    // The local storage state isn't updated with new properties of the Player model.
+    // In case the model was once stored on the user side and then an update has been released
+    // model changes would never get to local storage unless ...new Player() syncs things
+    this.players = state.players.map(player => ({
+      ...new Player(),
+      ...player
+    }))
   }
 
   private assignDealer() {
-    const noDealer = this.players.every(player => !player.dealer)
-    if (noDealer) {
-      this.players[0].dealer = true
+    if (this.players.length) {
+      const noDealer = this.players.every(player => !player.dealer)
+      if (noDealer) {
+        this.players[0].dealer = true
+      }
     }
   }
 }

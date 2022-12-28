@@ -1,0 +1,35 @@
+<div
+  class="backdrop"
+  (click)="onModalDismiss()"
+></div>
+<dialog class="modal" [open]="modalOpened">
+  <!-- Players -->
+  <div class="player" *ngFor="let player of players; let i = index">
+    <input class="player-name" type="text" [(ngModel)]="players[i]">
+    <button class="remove" (click)="dropOffPlayer(i)">
+      <fa-icon class="trash" [icon]="iconRemove"></fa-icon>
+    </button>
+  </div>
+  <div class="player">
+    <input class="new-player" type="text" placeholder="New player" [(ngModel)]="newPlayer">
+    <button class="add" (click)="addPlayer()" [disabled]="!newPlayer">
+      <fa-icon [icon]="iconConfirm"></fa-icon>
+    </button>
+  </div>
+
+  <hr>
+
+  <!-- Threshold -->
+  <input type="number" [(ngModel)]="threshold">
+  <div class="controls">
+    <button (click)="onModalDismiss()">
+      <fa-icon [icon]="iconCancel"></fa-icon>
+    </button>
+    <button
+      [disabled]="formIsInvalid()"
+      (click)="onSaveClicked()"
+    >
+      <fa-icon [icon]="iconSave"></fa-icon>
+    </button>
+  </div>
+</dialog>
