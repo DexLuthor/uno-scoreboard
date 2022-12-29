@@ -4,7 +4,10 @@
   <div class="score">{{score(player)}}</div>
   <hr class="separator">
   <ol class="history">
-    <li *ngFor="let point of player.history">{{point}}</li>
+    <li
+      *ngFor="let point of player.history"
+      [ngClass]="{'flawless': point === 0}"
+    >{{point}}</li>
   </ol>
   <strong>Flawless rounds: {{winsNumber(player)}}</strong>
   <input (change)="pointsChanged($event)" [value]="pointInput" type="number" placeholder="Enter points...">

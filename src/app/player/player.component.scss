@@ -38,6 +38,21 @@
   .history {
     margin-top: 30px;
     list-style: none;
+
+    li.flawless {
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        width: 2px;
+        height: 100%;
+        top: 0;
+        left: -5px;
+        background-color: rgb(var(--bgc));
+      }
+    }
+
   }
 
   input {
