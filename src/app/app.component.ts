@@ -21,6 +21,8 @@ export class AppComponent implements OnInit {
   threshold = 200
   pointInputs: (number | null)[] = []
   dark: boolean
+  finished: boolean = false
+  showConfig: boolean = true
 
   constructor(private persistenceService: PersistenceService) {
     const preferredTheme = persistenceService.getPreferredTheme();
@@ -28,16 +30,22 @@ export class AppComponent implements OnInit {
     document.body.classList.add(preferredTheme)
   }
 
+  private static calculatePointsFor(player: Player): number {
+    return player.history.reduce((a, b) => a + b, 0)
+  }
+
   ngOnInit(): void {
     this.restoreAndReconcileState()
     this.assignDealer()
 
     this.pointInputs = this.players.map(_ => null)
+    this.checkVictory()
+    this.showConfig = this.showConfigDialog()
   }
 
   @HostListener("window:keydown.enter")
   next() {
-    if (this.showConfigDialog()) {
+    if (this.showConfigDialog() || this.finished) {
       return
     }
 
@@ -58,6 +66,8 @@ export class AppComponent implements OnInit {
 
     //persist
     this.persistenceService.upsertState({players: this.players, threshold: this.threshold});
+
+    this.checkVictory()
   };
 
   reset() {
@@ -69,6 +79,8 @@ export class AppComponent implements OnInit {
     this.pointInputs = this.pointInputs.map(_ => null)
 
     this.persistenceService.flushState()
+    this.showConfig = this.showConfigDialog()
+    console.log(this.showConfigDialog())
   }
 
   back() {
@@ -86,6 +98,8 @@ export class AppComponent implements OnInit {
 
     //persist
     this.persistenceService.upsertState({players: this.players, threshold: this.threshold});
+
+    this.finished = false
   }
 
   backDisabled() {
@@ -108,16 +122,36 @@ export class AppComponent implements OnInit {
     })
     this.restoreAndReconcileState()
     this.assignDealer()
-  }
-
-  showConfigDialog(): boolean {
-    const state = this.persistenceService.readState();
-    return !state.threshold || state.players.length < 2
+    this.showConfig = false;
   }
 
   toggleTheme(): void {
     this.dark = document.body.classList.toggle('dark');
     this.persistenceService.setPreferredTheme(this.dark ? 'dark' : 'light')
+  }
+
+  playerSuccess(idx: number): "winner" | "looser" | null {
+    const points = this.players.map(p => AppComponent.calculatePointsFor(p));
+    const min = Math.min(...points)
+
+    if (this.finished && AppComponent.calculatePointsFor(this.players[idx]) === min) {
+      return "winner"
+    } else if (AppComponent.calculatePointsFor(this.players[idx]) >= this.threshold) {
+      return "looser"
+    }
+
+    return null;
+  }
+
+  private showConfigDialog(): boolean {
+    const state = this.persistenceService.readState();
+    return !state.threshold || state.players.length < 2
+  }
+
+  private checkVictory(): void {
+    if (this.players.some(p => AppComponent.calculatePointsFor(p) >= this.threshold)) {
+      this.finished = true
+    }
   }
 
   private restoreAndReconcileState(): void {
@@ -126,13 +160,14 @@ export class AppComponent implements OnInit {
     // The local storage state isn't updated with new properties of the Player model.
     // In case the model was once stored on the user side and then an update has been released
     // model changes would never get to local storage unless ...new Player() syncs things
+    this.threshold = state.threshold
     this.players = state.players.map(player => ({
       ...new Player(),
       ...player
     }))
   }
 
-  private assignDealer() {
+  private assignDealer(): void {
     if (this.players.length) {
       const noDealer = this.players.every(player => !player.dealer)
       if (noDealer) {

@@ -10,6 +10,7 @@ import {faShuffle} from "@fortawesome/free-solid-svg-icons";
 export class PlayerComponent {
   @Input("player") player!: Player
   @Input("pointsInput") pointInput: number | null = null;
+  @Input("playerSuccess") playerSuccess: "winner" | "looser" | null = null
   @Output("pointsChanged") readonly emitter = new EventEmitter<number>()
   iconDealer = faShuffle
 

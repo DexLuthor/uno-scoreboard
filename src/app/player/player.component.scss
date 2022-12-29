@@ -13,6 +13,14 @@
   color: rgb(var(--bgc));
   background-color: var(--contrast);
 
+  &.winner {
+    background-color: $winner;
+  }
+
+  &.looser {
+    background-color: $looser;
+  }
+
   .dealer {
     position: absolute;
     top: 0;

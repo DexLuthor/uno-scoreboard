@@ -1,6 +1,6 @@
 <div class="container">
   <settings-dialog
-    *ngIf="showConfigDialog()"
+    *ngIf="showConfig"
     (configsUpdated)="onConfigUpdated($event)"
   ></settings-dialog>
   <div class="players__wrapper">
@@ -8,6 +8,7 @@
       *ngFor="let player of players; let i = index"
       [player]="player"
       [pointsInput]="pointInputs[i]"
+      [playerSuccess]="playerSuccess(i)"
       (pointsChanged)="pointsChanged(i, $event)"
     ></player>
   </div>
@@ -21,6 +22,7 @@
     </button>
     <button
       (click)="next()"
+      [disabled]="finished"
       class="next"
       tabindex="-1">Next
     </button>
@@ -32,10 +34,46 @@
   >
     <fa-icon [icon]="iconReset"></fa-icon>
   </button>
-  <button class="theme" (click)="toggleTheme()">
+  <button class="theme" (click)="toggleTheme()" tabindex="-1">
     <fa-icon *ngIf="dark;else lightTheme" [icon]="iconSun"></fa-icon>
     <ng-template #lightTheme>
       <fa-icon [icon]="iconMoon"></fa-icon>
     </ng-template>
   </button>
 </div>
+
+<!--<base>-->
+<!--<br>-->
+<!--<canvas>a</canvas>-->
+<!--<data>a</data>-->
+<!--<datalist>a</datalist>-->
+<!--<del>a</del>-->
+<!--<details>a</details>-->
+<!--<dialog>a</dialog>-->
+<!--<embed>-->
+<!--<fieldset>a</fieldset>-->
+<!--<figure>a</figure>-->
+<!--<form>a</form>-->
+<!--<hr>-->
+<!--<iframe>a</iframe>-->
+<!--<ins>a</ins>-->
+<!--<label>a</label>-->
+<!--<legend>a</legend>-->
+<!--<link>-->
+<!--<meta>-->
+<!--<meter>a</meter>-->
+<!--<noscript>a</noscript>-->
+<!--<object>a</object>-->
+<!--<optgroup>a</optgroup>-->
+<!--<option>a</option>-->
+<!--<output>a</output>-->
+<!--<picture>a</picture>-->
+<!--<progress>a</progress>-->
+<!--<q>a</q>-->
+<!--<samp>a</samp>-->
+<!--<script>a</script>-->
+<!--<select>a</select>-->
+<!--<source>-->
+<!--<summary>a</summary>-->
+<!--<template>a</template>-->
+<!--<wbr>-->

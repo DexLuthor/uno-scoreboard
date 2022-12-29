@@ -1,4 +1,9 @@
-<div class="player">
+<div class="player"
+     [ngClass]="{
+        'winner': playerSuccess === 'winner',
+        'looser': playerSuccess === 'looser'
+     }"
+>
   <fa-icon *ngIf="player.dealer" class="dealer" [icon]="iconDealer" [classes]="['fa-2x']"></fa-icon>
   <div class="name">{{player.name}}</div>
   <div class="score">{{score(player)}}</div>

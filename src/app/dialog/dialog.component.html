@@ -1,7 +1,4 @@
-<div
-  class="backdrop"
-  (click)="onModalDismiss()"
-></div>
+<div class="backdrop"></div>
 <dialog class="modal" [open]="modalOpened">
   <!-- Players -->
   <div class="player" *ngFor="let player of players; let i = index">
